@@ -5,6 +5,9 @@
  */
 package quotation;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+
 /**
  *
  * @author Kevin
@@ -23,7 +26,7 @@ public class QuotationEntities {
     private String bottom;
     private String Front;
     private String warranty;
-    private double portCover;
+    private String portCover;
     private String partNo;
     private boolean Salereturn;
     private String date;
@@ -35,7 +38,7 @@ public class QuotationEntities {
     private String photo;
     
 
-    public QuotationEntities(String SN, String RMA, String Model, String Box, String foam, String powercord, String DVI, String keyboard, String videocable, String top, String bottom, String Front, String warranty, double portCover, String partNo, boolean Salereturn, String date, String HDD, String BootUpPass, String BootUpFail, String Conclusion, String memo, String photo) {
+    public QuotationEntities(String SN, String RMA, String Model, String Box, String foam, String powercord, String DVI, String keyboard, String videocable, String top, String bottom, String Front, String warranty, String portCover, String partNo, boolean Salereturn, String date, String HDD, String BootUpPass, String BootUpFail, String Conclusion, String memo, String photo) {
         this.SN = SN;
         this.RMA = RMA;
         this.Model = Model;
@@ -72,11 +75,11 @@ public class QuotationEntities {
         this.SN = SN;
     }
 
-    public double getPortCover() {
+    public String getPortCover() {
         return portCover;
     }
 
-    public void setPortCover(double portCover) {
+    public void setPortCover(String portCover) {
         this.portCover = portCover;
     }
 

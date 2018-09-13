@@ -633,7 +633,7 @@ public class inputform extends javax.swing.JFrame {
            Workbook wb = new XSSFWorkbook(fis);
            Sheet sheet = wb.getSheetAt(0);
            
-           int numberOfRow = sheet.getPhysicalNumberOfRows();
+           int numberOfRow = sheet.getPhysicalNumberOfRows()+1;
            formwriter.writeJframetoFile(fileName, listQuote,numberOfRow);
            
         } catch (FileNotFoundException ex) {

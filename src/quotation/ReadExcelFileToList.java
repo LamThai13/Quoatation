@@ -44,6 +44,7 @@ public class ReadExcelFileToList {
             Iterator<Row> rowIterator = sheet.iterator();
             while(rowIterator.hasNext()){
                 //get the row and travel through each line
+               
                 Row row = rowIterator.next();
                 //skip the first line
                 if(row.getRowNum()==0)
@@ -100,7 +101,7 @@ public class ReadExcelFileToList {
                             quoObj.setWarranty(String.valueOf(getCellValue(cell)));
                             break;
                         case 14:
-                            quoObj.setPortCover((Double)getCellValue(cell));
+                            quoObj.setPortCover(String.valueOf(getCellValue(cell)));
                         
                     }//end of swich
                     

@@ -10,8 +10,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,10 +27,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Kevin
  */
 public class updateQuote {
-    public void update(QuotationEntities quote,String path) throws FileNotFoundException, IOException{
+    public void update(QuotationEntities quote,String path, String pathOut) throws FileNotFoundException, IOException{
 
-
-       FileInputStream input = new FileInputStream(new File("C://Users//Kevin//Desktop//MS-ETN-quotation-Sample_.xlsx"));
+       String resourcesPath = "quotation/quoteSample/MS-ETN-quotation-Sample_.xlsx";
+       ClassLoader classloader = ClassLoader.getSystemClassLoader();
+       
+       //FileInputStream input = new FileInputStream(new File(classloader.getResource(resourcesPath).getFile()));
+       InputStream input = classloader.getResourceAsStream(resourcesPath) ;
        //create workbook;
        XSSFWorkbook wb = new XSSFWorkbook(input);
        //get sheet from workbook
@@ -34,7 +42,7 @@ public class updateQuote {
           
        Row row0 = sheet.createRow(0);
        Cell r0c0 = row0.createCell(0);
-       r0c0.setCellValue(quote.getSN());
+       r0c0.setCellValue("SN:"+quote.getSN());
        Row row2 = sheet.getRow(2);
        Cell r2c6 = row2.getCell(6);
        Cell r2c2 = row2.getCell(2);
@@ -226,7 +234,7 @@ public class updateQuote {
        switch (Model){
            case "M10":               
             if(keyboard.equalsIgnoreCase("n"))
-            r47c2.setCellValue(1);
+            //r47c2.setCellValue();
             break;
             case "M30":
             if(keyboard.equalsIgnoreCase("n"))
@@ -243,19 +251,19 @@ public class updateQuote {
        Cell r48c6 = row48.getCell(6);
        Cell r48c7 = row48.getCell(7);
        r48c7.setCellFormula("IF(B49*C49+D49*E49+F49*G49=0,\"\",B49*C49+D49*E49+F49*G49)");
-       double portC = quote.getPortCover();
-        System.out.println(portC);
+       String portC = quote.getPortCover();
+        //System.out.println(portC);
        switch (Model){
            case "M10":               
-            if(portC!=0.0)
+            if(portC!="")
             r48c2.setCellValue(portC);
             break;
             case "M30":
-            if(portC!=0.0)
+            if(portC!="")
             r48c4.setCellValue(portC);
             break;
             case "M50":
-            if(portC!=0.0)
+            if(portC!="")
             r48c6.setCellValue(portC);
             break;    
     }
@@ -278,12 +286,15 @@ public class updateQuote {
     }
        sheet.getRow(49).getCell(7).setCellFormula("IF(B50*C50+D50*E50+F50*G50=0,\"\",B50*C50+D50*E50+F50*G50)");
        sheet.getRow(50).getCell(7).setCellFormula("SUM(H3:H50)");
-       String fileName="MS-ETN-quotation-"+quote.getSN()+".xlsx";
-       File f = new File("C://Users//Kevin//Desktop//MilestoneQuote//"+fileName);
        
-       FileOutputStream fos =new FileOutputStream(new File(f.getAbsolutePath()));
+       String fileName="MS-ETN-quotation-"+quote.getSN()+".xlsx";      
+            
+           File f = new File(pathOut+"/"+fileName);
+        //System.out.println(chooser.getSelectedFile().getAbsolutePath());      
+        HSSFFormulaEvaluator.evaluateAllFormulaCells(wb);
+        wb.setSheetName(wb.getSheetIndex(sheet), quote.getSN());
+        FileOutputStream fos =new FileOutputStream(f.getAbsolutePath());
 	        wb.write(fos);
-	        fos.close();
-       
+	        fos.close();  
     }
 }
